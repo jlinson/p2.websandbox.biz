@@ -17,13 +17,13 @@
   <?php endif; ?>
 
     <!-- Controller Specific CSS/JS -->
-	<?php if(isset($client_files_head)) echo $client_files_head; ?>
-	
+    <?php if(isset($client_files_head)) echo $client_files_head; ?>
+
 </head>
 
 <body>	
 
-	<?php if(isset($content)) echo $content; ?>
+    <?php if(isset($content)) echo $content; ?>
 
     <!-- Common JS -->
   <?php if(IN_PRODUCTION): ?>
@@ -34,6 +34,6 @@
   <?php endif; ?>
 
     <!-- Controller Specific JS -->
-	<?php if(isset($client_files_body)) echo $client_files_body; ?>
+    <?php if(isset($client_files_body)) echo $client_files_body; ?>
 </body>
 </html>
