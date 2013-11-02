@@ -1,5 +1,5 @@
 <?php
-/* 
+/**
 When setting configurations, remember that any app is also impacted by the configurations found in /core/config/config.php;
 Most of the core configs can be overwritten here on the app level.
 
@@ -14,13 +14,19 @@ If you want a different default time format for this app, set it below
 */
 
 # What is the name of this app?
-	define('APP_NAME', 'Squirrel Cage');  
+	define('APP_NAME', 'Squirrel Cage');
+
+# What is the app title tag line?
+    define('APP_TAGLINE', 'Show us your nuts!');
 
 # When email is sent out from the server, where should it come from?
 # Ideally, this should match the domain name
 	define('APP_EMAIL', 'webmaster@p2.websandbox.biz'); 
 
-/* 
+# Company / developer copyright boilerplate:
+    define('COPYRIGHT', 'Jeffrey Linson 2013');
+
+/*
 A email designated to receive messages from the server. Examples:
  	* When there's a MySQL error on the live server it will send it to this email
  	* If you're BCCing yourself on outgoing emails you may want them to go there
