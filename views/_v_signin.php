@@ -1,6 +1,6 @@
 <div class="container">
 
-    <form class="form-signin">
+    <form class="form-signin" method="POST" action="/users/p_login">
         <h2 class="form-signin-heading">Please Sign-in</h2>
         <input type="text" class="form-control" placeholder="Email address" required autofocus>
         <input type="password" class="form-control" placeholder="Password" required>

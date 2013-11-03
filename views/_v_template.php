@@ -41,13 +41,13 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="<?php if($nav_active=='home') echo "active";?>"><a href="#">Home</a></li>
-                <li class="<?php if($nav_active=='feature') echo "active";?>"><a href="#about">Features</a></li>
+                <li class="<?php if($nav_active=='home') echo "active";?>"><a href="/">Home</a></li>
+                <li class="<?php if($nav_active=='features') echo "active";?>"><a href="/index/features">Features</a></li>
                 <?php if(!$user): ?>
-                    <li class="disabled"><a href="#contact">Profile</a></li>
+                    <li class="<?php if($nav_active=='signup') echo "active";?>"><a href="/users/signup">Sign-up</a></li>
                     <li class="dropdown, disabled">
                 <?php else: ?>
-                    <li class="<?php if($nav_active=='profile') echo "active";?>"><a href="#contact">Profile</a></li>
+                    <li class="<?php if($nav_active=='profile') echo "active";?>"><a href="/users/profile">Profile</a></li>
                     <li class="dropdown<?php if($nav_active=='dropdown') echo ", active";?>">
                 <?php endif; ?>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
