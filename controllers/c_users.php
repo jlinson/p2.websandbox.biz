@@ -11,9 +11,16 @@ class users_controller extends base_controller {
     }
 
     public function index() {
-        echo "This is the index page.<br>";
-        echo "Time:" . Time::now();
-    }
+        # This is a catch in the event user types "/users/" or "/users/index" in the URL.
+        # - this is a double check; nav-bar does not have any call to "/users/index".
+        # If user is blank, they're not logged in; redirect them to the login page
+        # - otherwise, use the profile page as the default user page.
+        if(!$this->user) {
+            Router::redirect('/users/login');
+        } else {
+            Router::redirect('/users/profile');
+        }
+    } # End of index()
 
     public function signup($error_msg = NULL) {
 
@@ -45,7 +52,7 @@ class users_controller extends base_controller {
         # Render the view
         echo $this->template;
 
-    } # End of method
+    } # End of signup()
 
     public function p_signup() {
 
@@ -64,9 +71,6 @@ class users_controller extends base_controller {
             # $this->signup("The passwords don't match. Please retry.");
             $error_msg = "The passwords don't match. Please retry.";
             Router::redirect("/users/signup/" . $error_msg);
-            $this->template->content->user_msg = "New" . $error_msg;
-            echo $this->template;
-            echo "POST REDIRECT MSG";
 
         } else {
             # Encrypt the password and clear the password_confirm
@@ -102,13 +106,35 @@ class users_controller extends base_controller {
 
         } # endif
 
-    } # End of method
+    } # End of p_signup()
 
-    public function login() {
-        /** login() is not called
-         *  - login form built into nav-bar
+    public function login($error_msg = NULL) {
+        /** login() is called if login fails (provides other options, e.g. password reset)
+         *  - primary login form built into nav-bar.
          */
-        echo "This is the login page.";
+        # First, set the content of the template with a view file
+        $this->template->content = View::instance('v_users_login');
+
+        # Now set the <title> tag
+        $this->template->title = "Login" . " | " . APP_NAME;
+
+        # Pass back any validation error messages
+        if (!empty($error_msg)) {
+            $this->template->content->user_msg = $error_msg;
+        } else {
+            $this->template->content->user_msg = "Please Login";
+        }
+
+        # Login specific CSS/JS includes
+        $client_files_head = Array("/css/signin.css");
+        $this->template->client_files_head = Utils::load_client_files($client_files_head);
+
+        # Set current menu item
+        $this->template->nav_active = "";
+
+        # Render the view
+        echo $this->template;
+
     } # End of method
 
     public function p_login() {
@@ -149,19 +175,47 @@ class users_controller extends base_controller {
             Router::redirect("/");
 
         }
-    } # End of method
+    } # End of p_login()
 
     public function logout() {
-        echo "This is the logout page.";
-    } # End of method
+
+        # Generate and save a new token for next login
+        $new_token = sha1(TOKEN_SALT.$this->user->email.Utils::generate_random_string());
+
+        # Create the data array we'll use with the update method
+        # In this case, we're only updating one field, so our array only has one entry
+        $data = Array("token" => $new_token);
+
+        # Do the update
+        DB::instance(DB_NAME)->update("users", $data, "WHERE token = '".$this->user->token."'");
+
+        # Delete their token cookie by setting it to a date in the past - effectively logging them out
+        setcookie("token", "", strtotime('-1 year'), '/');
+
+        # Send them back to the main index.
+        Router::redirect("/");
+
+    } # End of logout()
 
 
     public function profile($user_name = NULL) {
 
-        $this->template->content = View::instance('v_users_profile');
-        $this->template->title = "Profile";
-        $this->template->content->user_name = $user_name;
+        # If user is blank, they're not logged in; redirect them to the login page
+        # - this is a double check; nav-bar should not enable "profile" for non-logged-in user.
+        # - this is necessary in event user types "/users/profile" in the URL.
+        if(!$this->user) {
+            Router::redirect('/users/login');
+        }
 
+        # If they weren't redirected away, continue:
+
+        # Setup view
+        $this->template->content = View::instance('v_users_profile');
+        $this->template->title   = "Profile for " . $this->user->first_name;
+
+        # Render template
         echo $this->template;
-    } # End of method
-} # eoc
+
+    } # End of profile()
+
+} # End of c_users.php

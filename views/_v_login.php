@@ -7,4 +7,3 @@
     </div>
     <button type="submit" class="btn btn-success" value="Log in">Log in</button>
 </form>
- 

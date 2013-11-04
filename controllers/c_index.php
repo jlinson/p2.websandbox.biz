@@ -35,7 +35,7 @@ class index_controller extends base_controller {
 		# Render the view
 			echo $this->template;
 
-	} # End of method
+	} # End of index()
 
     /*-------------------------------------------------------------------------------------------------
         Accessed via http://localhost/index/features/  - a static feature list page
@@ -63,6 +63,6 @@ class index_controller extends base_controller {
         # Render the view
         echo $this->template;
 
-    } # End of method
+    } # End of features
 
-} # End of class
+} # End of c_index.php

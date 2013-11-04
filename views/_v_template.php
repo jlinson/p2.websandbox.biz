@@ -73,6 +73,8 @@
 <?php if(isset($content)) echo $content; ?>
 
     <div class="container">
+        <hr>
+
         <footer>
             <p>&copy; <?php echo COPYRIGHT; ?></p>
         </footer>
