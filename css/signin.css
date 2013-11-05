@@ -10,8 +10,12 @@ body {
   margin: 0 auto;
 }
 .form-signin .form-signin-heading,
+.form-signin .form-signin-msg,
 .form-signin .checkbox {
   margin-bottom: 10px;
+}
+.form-signin .form-signin-msg {
+    color: #357ebd;
 }
 .form-signin .checkbox {
   font-weight: normal;
@@ -29,10 +33,11 @@ body {
   z-index: 2;
 }
 .form-signin input[type="text"] {
-  margin-bottom: -1px;
+  margin-bottom: 1px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
+.form-signin input[name="handle"],
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
