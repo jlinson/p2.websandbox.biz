@@ -3,7 +3,7 @@
     &nbsp;
     </p>
     <form class="form-signin" method="POST" action="/users/p_signup">
-        
+
         <h2 class="form-signin-heading">Please Sign-up</h2>
         <div class = "form-signin-msg">
             <?php if(isset($user_msg)) echo $user_msg; ?>

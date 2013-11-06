@@ -9,14 +9,22 @@
         <?php foreach($posts as $post): ?>
 
             <article>
+                <?php if ($current_uid != $post['post_user_id']): ?>
+                    <h2><?php echo $post['first_name']; ?> <?php echo $post['last_name']; ?> (<?php echo $post['handle']; ?>) posted:</h2>
+                    <table>
+                <?php endif; ?>
+                    <tr>
+                        <td><textarea readonly><?php echo $post['content']; ?></textarea></td>
+                        <td>&nbsp;</td>
+                        <td><time datetime="<?php echo Time::display($post['created'],'Y-m-d G:i', $user->timezone); ?>">
+                                  <?php echo Time::display($post['created'], '', $user->timezone); ?>
+                        </time></td>
+                    </tr>
+                <?php if ($current_uid != $post['post_user_id']): ?>
+                    </table>
+                <?php endif; ?>
 
-                <h2><?php echo $post['first_name']; ?> <?php echo $post['last_name']; ?> (<?php echo $post['handle']; ?>) posted:</h2>
-
-                <p><?php echo $post['content']; ?></p>
-
-                <time datetime="<?php echo Time::display($post['created'],'Y-m-d G:i', $user->timezone); ?>">
-                    <?php echo Time::display($post['created'], '', $user->timezone); ?>
-                </time>
+                <?php $current_uid = $post['post_user_id']; ?>
 
             </article>
 

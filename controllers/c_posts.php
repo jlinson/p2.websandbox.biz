@@ -45,8 +45,8 @@ class posts_controller extends base_controller {
 
         # CSS/JS includes
         # - head
-        // $client_files_head = Array("");
-        // $this->template->client_files_head = Utils::load_client_files($client_files_head);
+        $client_files_head = Array("/css/posts.css");
+        $this->template->client_files_head = Utils::load_client_files($client_files_head);
         # - body
         //	$client_files_body = Array("");
         //	$this->template->client_files_body = Utils::load_client_files($client_files_body);
@@ -65,12 +65,14 @@ class posts_controller extends base_controller {
            INNER JOIN users
                    ON posts.user_id = users.user_id
                 WHERE users_users.user_id = " . $this->user->user_id .
-                " AND users_users.created > users_users.dropped";
+                " AND users_users.created > users_users.dropped
+                ORDER BY users.handle ASC, posts.modified DESC ";
 
         # Run the query
         $posts = DB::instance(DB_NAME)->select_rows($q);
 
         # Pass data to the View
+        $this->template->content->current_uid = 0;
         $this->template->content->posts = $posts;
         $this->template->content->usertimezone = $this->user->timezone;
 
