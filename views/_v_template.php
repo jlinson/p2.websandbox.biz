@@ -15,6 +15,7 @@
   <?php else: ?>
     <link rel="stylesheet" href="/css/bootstrap.css" type="text/css">
   <?php endif; ?>
+    <link rel="stylesheet" href="/css/jumbotron.css" type="text/css">
 
     <!-- Controller Specific CSS/JS -->
     <?php if(isset($client_files_head)) echo $client_files_head; ?>
@@ -50,11 +51,11 @@
                     <li class="<?php if($nav_active=='profile') echo "active";?>"><a href="/users/profile">Profile</a></li>
                     <li class="dropdown<?php if($nav_active=='dropdown') echo ", active";?>">
                 <?php endif; ?>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Posts (aka:Nuts) <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
+                        <li><a href="/posts/add">Post Nuts</a></li>
+                        <li><a href="/posts/users">Follow Nuts</a></li>
+                        <li><a href="/posts/index">View Nuts</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">Nav header</li>
                         <li><a href="#">Separated link</a></li>

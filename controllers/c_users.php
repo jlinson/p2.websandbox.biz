@@ -85,61 +85,6 @@ class users_controller extends base_controller {
 
     } # End of cmmn_errorcheck()
 
-    /**
-     * Validate an email address.
-     *  Provide email address (raw input)
-     *  Returns true if the email address has the email format
-     *  and the domain exists.
-     *
-     * Source: http://www.linuxjournal.com/article/9585?page=0,3
-     *
-     * Other option: user web svc, e.g. http://www.email-validator.net
-     */
-    public function valid_email($email) {
-        $isValid = true;
-        $atIndex = strrpos($email, "@");
-        if (is_bool($atIndex) && !$atIndex) {
-            $isValid = false;
-
-        } else {
-            $domain = substr($email, $atIndex+1);
-            $local = substr($email, 0, $atIndex);
-            $localLen = strlen($local);
-            $domainLen = strlen($domain);
-            if ($localLen < 1 || $localLen > 64) {
-                // local part length exceeded
-                $isValid = false;
-            } else if ($domainLen < 1 || $domainLen > 255) {
-                // domain part length exceeded
-                $isValid = false;
-            } else if ($local[0] == '.' || $local[$localLen-1] == '.') {
-                // local part starts or ends with '.'
-                $isValid = false;
-            } else if (preg_match('/\\.\\./', $local)) {
-                // local part has two consecutive dots
-                $isValid = false;
-            } else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
-                // character not valid in domain part
-                $isValid = false;
-            } else if (preg_match('/\\.\\./', $domain)) {
-                // domain part has two consecutive dots
-                $isValid = false;
-            } else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local))) {
-                // character not valid in local part unless
-                // local part is quoted
-                if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local))) {
-                    $isValid = false;
-                }
-            }
-            if ($isValid && !(checkdnsrr($domain,"MX") || checkdnsrr($domain,"A"))) {
-                // domain not found in DNS
-                $isValid = false;
-            }
-        }
-        return $isValid;
-
-    } # End of valid_email()
-
     /*-------------------------------------------------------------------------------------------------
 
 	-------------------------------------------------------------------------------------------------*/
@@ -232,7 +177,7 @@ class users_controller extends base_controller {
 
         # Now test the email address (Signup Specific Test)
         # - is the email a valid format / valid domain
-        if (!$this->valid_email($_POST['email'])) {
+        if (!AppUtils::valid_email($_POST['email'])) {
             $error = "email-invalid";
             Router::redirect("/users/signup/" . $error);
         }
@@ -309,7 +254,7 @@ class users_controller extends base_controller {
 
 	-------------------------------------------------------------------------------------------------*/
     public function login($error = NULL) {
-        /** login() is called if login fails (provides other options, e.g. password reset)
+        /** login() is called if login fails from nav-bar (provides other options, e.g. password reset)
          *  - primary login form built into nav-bar.
          */
         # First, set the content of the template with a view file
@@ -435,10 +380,21 @@ class users_controller extends base_controller {
 
         # If they weren't redirected away, continue:
 
-        # Setup view
+        # Setup view and current page title
         $this->template->content = View::instance('v_users_profile');
-        $this->template->title   = "Profile for " . $this->user->first_name;
+        $this->template->title   = "Profile for " . $this->user->first_name . " | " . APP_NAME;
 
+        # CSS/JS includes
+        # - head
+        // $client_files_head = Array("");
+        // $this->template->client_files_head = Utils::load_client_files($client_files_head);
+        # - body
+        //	$client_files_body = Array("");
+        //	$this->template->client_files_body = Utils::load_client_files($client_files_body);
+
+        # Set current menu item
+        $this->template->nav_active = "profile";
+    
         # Render template
         echo $this->template;
 
