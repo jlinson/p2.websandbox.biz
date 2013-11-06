@@ -8,6 +8,7 @@ class users_controller extends base_controller {
 
     # Initialize the validation error message array used by login() and signup()
     # - array allows passing short-msg key in param with long-msg for user display
+    # - variable naming: $error => $error_msg
     protected $error_msg = array(
         "blank-field"    =>  "Missing information. All data is required. Please retry.",
         "blank-email"    =>  "Email address cannot be blank. Please retry.",
@@ -18,6 +19,7 @@ class users_controller extends base_controller {
         "short-handle"   =>  "Handle/user-id too short (under 6 characters). Please re-enter.",
         "long-pwd"       =>  "Password is too long (exceeds 25 characters). Please re-enter.",
         "short-pwd"      =>  "Password is too short (under 6 characters). Please re-enter.",
+        "long-name"      =>  "Really? Your name is longer than 255 characters? Please abbreviate and re-enter.",
         "invalid-login"  =>  "Email and password combination not found. Please re-try.",
         "pwd-mismatch"   =>  "The passwords don't match. Please re-confirm.",
         "handle-dupe"    =>  "The handle/user-id is already in use. Please try another ID.",
@@ -78,7 +80,6 @@ class users_controller extends base_controller {
                         $error = "blank-field";
                 }
             }
-
         }
 
       return $error;
@@ -119,7 +120,7 @@ class users_controller extends base_controller {
         $this->template->title = "Sign Up" . " | " . APP_NAME;
 
         # Pass back any validation error messages
-        if (!empty($error)) {
+        if (!empty($error) and isset($this->error_msg[$error])) {
             $this->template->content->user_msg = $this->error_msg[$error];
         } else {
             $this->template->content->user_msg = "&nbsp;";
@@ -205,6 +206,12 @@ class users_controller extends base_controller {
             Router::redirect("/users/signup/" . $error);
         }
 
+        # Now check for some ridiculously long name -
+        if (strlen($_POST['first_name']) > 255 or strlen($_POST['last_name']) > 255) {
+            $error = "long-name";
+            Router::redirect("/users/signup/" . $error);
+        }
+
         # Now augment the $_POST array with additional required parameters
         $_POST['created'] = Time::now();
         $_POST['modified'] = $_POST['created'];
@@ -264,7 +271,7 @@ class users_controller extends base_controller {
         $this->template->title = "Login" . " | " . APP_NAME;
 
         # Pass back any validation error messages
-        if (!empty($error)) {
+        if (!empty($error) and isset($this->error_msg[$error])) {
             $this->template->content->user_msg = $this->error_msg[$error];
         } else {
             $this->template->content->user_msg = "&nbsp;";
@@ -367,9 +374,9 @@ class users_controller extends base_controller {
     } # End of logout()
 
     /*-------------------------------------------------------------------------------------------------
-
+    Loads the user profile view
 	-------------------------------------------------------------------------------------------------*/
-    public function profile($user_name = NULL) {
+    public function profile() {
 
         # If user is blank, they're not logged in; redirect them to the login page
         # - this is a double check; nav-bar should not enable "profile" for non-logged-in user.
@@ -392,12 +399,24 @@ class users_controller extends base_controller {
         //	$client_files_body = Array("");
         //	$this->template->client_files_body = Utils::load_client_files($client_files_body);
 
+        # Build the query
+        # No query is required because the User table has been loaded into $this->user!
+        # - access the $this->user properties in v_users_profile using the global $user.
+
         # Set current menu item
         $this->template->nav_active = "profile";
-    
+
         # Render template
         echo $this->template;
 
     } # End of profile()
+
+    /*-------------------------------------------------------------------------------------------------
+    Updates the DB with profile view changes
+	-------------------------------------------------------------------------------------------------*/
+    public function p_profile() {
+
+
+    }
 
 } # End of c_users.php

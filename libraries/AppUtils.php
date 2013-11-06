@@ -63,6 +63,54 @@ class AppUtils {
 
     } # End of valid_email()
 
+    /* ----------------------------------------------------------------------------------------------
+     * Little routine to concatenate router passed messages -
+     * - concatenates messages in reverse order (pushed to top)
+     * ---------------------------------------------------------------------------------------------- */
+     public static function push_message($msg, $new_msg) {
+
+         $msg = trim($msg);
+         $new_msg = trim($new_msg);
+         if (empty($msg)) {
+             # must be first item added
+             $msg = $new_msg;
+         } else {
+             $msg = $new_msg . "&" . $msg;
+         }
+
+         return $msg;
+     }
+
+    /* ----------------------------------------------------------------------------------------------
+     * Little routine to unstring router passed messages -
+     * - pops messages off front of string
+     * ---------------------------------------------------------------------------------------------- */
+    public static function pop_message($msg) {
+
+        $msg_stack = Array();
+
+        $msg = trim($msg);
+
+        if (!empty($msg)) {
+            $pos = strpos($msg, "&", 0);
+
+            if ($pos == 0) {
+                $msg_stack[] = $msg;
+            } else {
+                $start = 0;
+
+                while ($pos > 0) {
+                    $msg_stack[] = substr($msg, $start, ($pos - $start));
+                    $start = $pos + 1;
+                    $pos = strpos($msg, "&", $start);
+                }
+
+                $msg_stack[] = substr($msg, ($start), (strlen($msg) - $start) );
+            }
+        }
+
+       return $msg_stack;
+    }
 
 
 } #eoc

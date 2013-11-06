@@ -1,0 +1,23 @@
+/*!
+ * Special css for posts - to isolate from main css
+ * - for add-on to bootstrap.css
+ */
+
+.posts {
+    width: 600px;
+    height: 120px;
+    border: 3px solid #cccccc;
+    padding: 5px;
+    font-family: Tahoma, sans-serif;
+}
+.form-signin .form-signin-msg {
+    color: #357ebd;
+}
+textarea {
+    width: 600px;
+    height: 50px;
+    padding: 5px;
+    font-family: Tahoma, sans-serif;
+}
+
+}

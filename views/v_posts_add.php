@@ -7,20 +7,16 @@
         <div class = "form-signin-msg">
             <?php if(isset($user_msg)) echo $user_msg; ?>
         </div>
-        <label for='content'>New Post:</label><br>
+            <label for='content'>(Posts can be a maximum of 255 characters - HTML tags are accepted.)</label><br>
         <!--
-        <input type="text" class="form-control" placeholder="Email address" name="email" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" name="password" required>
-        -->
-        <textarea name='content' id='content'></textarea>
+          -->
+        <textarea class="posts" name='content' id='content' placeholder="Enter your post here." maxlength="255" autofocus></textarea>
 
         <br><br>
-        <input type='submit' value='New post'>
-
         <button class="btn btn-lg btn-primary" type="submit">Save Nut</button>
-        <!--
-        <p><a class="btn btn-primary btn-lg" href="/users/signup">Sign Up &raquo;</a></p>
-        -->
+        <p>
+      </p>
+
     </form>
 
 </div> <!-- /container -->
