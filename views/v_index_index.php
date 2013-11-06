@@ -44,7 +44,7 @@
             <?php else: ?>
                 <p>Well, I see you're already logged-in. Great! Now you need to get posting to show us your nuts.
                     Just click the button below and get posting. And thanks for sharing.</p>
-                <p><a class="btn btn-primary btn-lg" href="/index/add">Post Nuts &raquo;</a></p>
+                <p><a class="btn btn-primary btn-lg" href="/posts/add">Post Nuts &raquo;</a></p>
             <?php endif; ?>
         </div>
     </div>
