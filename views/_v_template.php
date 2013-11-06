@@ -37,7 +37,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="/"><img src="/images/SC-Logo20.png" alt="<?php echo APP_NAME . " logo";?>"</a>
+            <a class="navbar-brand" href="/"><img src="/images/SC-Logo20.png" alt="<?php echo APP_NAME . " logo"; ?>"></a>
             <a class="navbar-brand" href="/"><?php echo APP_NAME; ?></a>
         </div>
         <div class="navbar-collapse collapse">
