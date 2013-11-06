@@ -340,12 +340,12 @@ class posts_controller extends base_controller {
             # DB insert failed - fatal error
             # - this intentionally over-writes anything in $error - jbl
             $error = "dberror";
-            Router::redirect("/posts/add/" . $error);
+            Router::redirect("/posts/edit/" . $error);
         }
 
         # If we got here, then nothing fatal happened
-        $error = AppUtils::push_message($error, "post-added");
-        Router::redirect("/posts/add/" . $error);
+        $error = AppUtils::push_message($error, "post-updated");
+        Router::redirect("/posts/edit/" . $error);
 
     } # End of p_edit()
 
